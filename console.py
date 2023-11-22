@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from datetime import datetime
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -100,6 +100,10 @@ class HBNBCommand(cmd.Cmd):
             key = key.replace('"', '')
             value = value.replace('"', '')
             key_value_pairs[key] = value
+
+        key_value_pairs['created_at'] = key_value_pairs.get('created_at', datetime.now().isoformat())
+        key_value_pairs['updated_at'] = key_value_pairs.get('updated_at', datetime.now().isoformat())
+
         return key_value_pairs
 
     def do_quit(self, command):
@@ -137,9 +141,9 @@ class HBNBCommand(cmd.Cmd):
             return False
 
         new_dict = self._key_value_parser(args[1:])
-        instance = classes[class_name](**new_dict)
-        self.storage.new(instance)
-        self.storage.save()
+        instance =self.classes[class_name](**new_dict)
+        storage.new(instance)
+        storage.save()
         
         print(instance.id)
         return True
