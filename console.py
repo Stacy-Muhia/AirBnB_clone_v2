@@ -10,7 +10,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models.__init__ import storage
-from datetime import datetime
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -92,20 +91,6 @@ class HBNBCommand(cmd.Cmd):
             print('(hbnb) ', end='')
         return stop
 
-    def _key_value_parser(self, args):
-        """Parses key_value"""
-        key_value_pairs = {}
-        for arg in args:
-            key, value = arg.split('=')
-            key = key.replace('"', '')
-            value = value.replace('"', '')
-            key_value_pairs[key] = value
-
-        key_value_pairs['created_at'] = key_value_pairs.get('created_at', datetime.now().isoformat())
-        key_value_pairs['updated_at'] = key_value_pairs.get('updated_at', datetime.now().isoformat())
-
-        return key_value_pairs
-
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
         exit()
@@ -140,12 +125,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return False
 
-        new_dict = self._key_value_parser(args[1:])
-        instance =self.classes[class_name](**new_dict)
-        storage.new(instance)
-        storage.save()
-        
-        print(instance.id)
+        args = ' '.join(args[1:])
+        args = args.replace('"', '\"')
+
+        try:
+            instance = eval("{}({})".format(class_name, args))
+            storage.new(instance)
+            storage.save()
+            print(instance.id)
+        except Exception as e:
+            print("** {}".format(str(e)))
+
         return True
 
     def help_create(self):
