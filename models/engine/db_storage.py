@@ -11,6 +11,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
+
 class DBStorage:
     __engine = None
     __session = None
@@ -66,7 +67,7 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
-    
+
     def close(self):
         """Close the SQLAlchemy working session"""
         self.__session.close()

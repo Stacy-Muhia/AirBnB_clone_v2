@@ -16,7 +16,6 @@ class Place(BaseModel, Base):
 
     __tablename__ = 'places'
 
-
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -28,7 +27,7 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenities = relationship('Amenity', secondary=place_amenity,
-                                 viewonly=False, backref='place_amenities')
+                viewonly=False, backref='place_amenities')
 
     user = relationship('User', backref='places')
     cities = relationship('City', backref='places')
