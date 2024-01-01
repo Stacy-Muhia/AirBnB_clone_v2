@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Script that starts a Flask web application """
+""" Functions to  start a Flask web application """
 from flask import Flask
 
 app = Flask(__name__)
@@ -19,15 +19,21 @@ def hbnb():
 
 @app.route("/c/<text>", strict_slashes=False)
 def c_text(text):
-    """Displaying of C then text variable"""
+    """Displaying 'C' then value of the text variable"""
     return "C {}".format(text.replace("_", " "))
 
 
 @app.route("/python/<text>", strict_slashes=False)
 @app.route("/python/", strict_slashes=False)
 def python_text(text="is cool"):
-    """Displaying of python then the text variable"""
+    """Displaying 'Python' then value of the text variable"""
     return "Python {}".format(text.replace("_", " "))
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
+def number_n(n):
+    """Displaying only if n is an integer"""
+    return "{} is a number".format(n)
 
 
 if __name__ == "__main__":
